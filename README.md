@@ -53,13 +53,13 @@ This backend is deployed on **Render**.
 A webhook is triggered on every signup, and n8n sends a welcome email using **MailTrap SMTP**.
 
 ### Workflow Overview  
-![Workflow](backend/assets/workflow.png)
+![Workflow](assets/workflow.png)
 
 ### Execution Log  
-![Execution](backend/assets/execution.png)
+![Execution](assets/execution.png)
 
 ### Sample Email from MailTrap  
-![Welcome Email](backend/assets/mailtrap-email.png)
+![Welcome Email](assets/mailtrap-email.png)
 
 
 
