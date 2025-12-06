@@ -11,7 +11,7 @@ router.post("/login", login);
 // Protected Route (requires JWT)
 router.get("/dashboard", authMiddleware, (req, res) => {
   res.json({
-    message: `Welcome to your dashboard, ${req.user.email}!`,
+    message: `Welcome to your dashboard, ${req.user.name}!`,
     user: req.user,
   });
 });

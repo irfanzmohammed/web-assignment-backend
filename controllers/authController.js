@@ -30,8 +30,13 @@ const signup = async (req, res) => {
       password: hashedPassword,
     });
 
-    // OPTIONAL — trigger n8n webhook later
-    
+    // OPTIONAL — trigger n8n webhook 
+
+    await axios.post("https://developer-7auto.app.n8n.cloud/webhook-test/new-signup", {
+  name: newUser.name,
+  email: newUser.email,
+});
+
 
     return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
