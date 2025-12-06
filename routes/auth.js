@@ -1,0 +1,19 @@
+const express = require("express");
+const { signup, login } = require("../controllers/authController");
+const authMiddleware = require("../middleware/authMiddleware");
+
+const router = express.Router();
+
+// Public Routes
+router.post("/signup", signup);
+router.post("/login", login);
+
+// Protected Route (requires JWT)
+router.get("/dashboard", authMiddleware, (req, res) => {
+  res.json({
+    message: `Welcome to your dashboard, ${req.user.email}!`,
+    user: req.user,
+  });
+});
+
+module.exports = router;
