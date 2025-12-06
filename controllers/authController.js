@@ -3,40 +3,41 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
 
-
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validation
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already in use" });
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user
     const newUser = await User.create({
       name,
       email,
       password: hashedPassword,
     });
 
-    // OPTIONAL — trigger n8n webhook 
-
-    await axios.post("https://developer-7auto.app.n8n.cloud/webhook-test/new-signup", {
-  name: newUser.name,
-  email: newUser.email,
-});
-
+    // OPTIONAL n8n webhook 
+    try {
+      await axios.post(
+        "https://developer-7auto.app.n8n.cloud/webhook/new-signup", 
+        {
+          name: newUser.name,
+          email: newUser.email,
+        }
+      );
+    } catch (webhookError) {
+      console.error("n8n Webhook Error:", webhookError.message);
+      
+    }
 
     return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
@@ -44,6 +45,7 @@ const signup = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
 
 
 const login = async (req, res) => {
